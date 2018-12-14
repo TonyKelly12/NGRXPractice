@@ -5,7 +5,7 @@ import { Product } from './product';
 export class ProductData implements InMemoryDbService {
 
     createDb() {
-        const products = [
+        const products: Product[] = [
             {
                 'id': 1,
                 'productName': 'Leaf Rake',
