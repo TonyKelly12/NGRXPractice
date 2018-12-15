@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +22,9 @@ import { PageNotFoundComponent } from './Components/page-not-found/page-not-foun
 /* Feature Modules */
 import { UserModule } from './User/user/user.module';
 import { User } from './User/user';
-/* tslint:disable */
+
+/* Dev Tools */
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,11 @@ import { User } from './User/user';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({
+      name: 'ReduxPOC Dev Tools',
+      maxAge: 25,
+      logOnly: environment.production
+    }),
     EffectsModule.forRoot([AppEffects]),
     HttpClientInMemoryWebApiModule.forRoot(ProductData),
     HttpClientModule,

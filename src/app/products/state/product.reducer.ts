@@ -1,9 +1,9 @@
 export function ProductReducer(state, action) {
   switch (action.type) {
-    case 'ACTION_NAME':
+    case 'TOGGLE_PRODUCT_CODE':
       return {
         ...state,
-        visibilityFilter: action.filter
+        showProductCode: action.payload
       };
     default:
       return state;
