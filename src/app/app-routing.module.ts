@@ -14,7 +14,7 @@ const routes: Routes = [
       {
         path: 'products',
         // canActivate: [AuthGuard],
-        loadChildren: './products/product.module#ProductsModule'
+        loadChildren: './products/products.module#ProductsModule'
       },
       { path: '', redirectTo: 'welcome', pathMatch: 'full' },
     ]
