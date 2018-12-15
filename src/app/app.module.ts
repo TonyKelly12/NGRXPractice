@@ -1,4 +1,3 @@
-import { User } from './../../../ReduxStarter/Angular-NgRx-GettingStarted/APM-Demo4/src/app/user/user';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +20,7 @@ import { PageNotFoundComponent } from './Components/page-not-found/page-not-foun
 
 /* Feature Modules */
 import { UserModule } from './User/user/user.module';
-
+import { User } from './User/user';
 /* tslint:disable */
 
 @NgModule({
