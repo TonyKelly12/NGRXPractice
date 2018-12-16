@@ -50,6 +50,23 @@ export function ProductReducer(state = initialState, action: ProductActions): Pr
         ...state,
         currentProduct: {...action.payload}
       };
+
+    case ProductActionTypes.ClearCurrentProduct:
+    return {
+      ...state,
+      currentProduct: null
+    };
+    case ProductActionTypes.InitializeCurrentProduct:
+    return {
+      ...state,
+      currentProduct: {
+        id: 0,
+        productName: '',
+        productCode: 'New',
+        description: '',
+        starRating: 0
+      }
+    };
     default:
       return state;
   }
