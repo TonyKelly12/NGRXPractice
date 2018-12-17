@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
+// import { AppEffects } from './app.effects';
 
 // Imports for loading & configuring the in-memory web api
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -43,7 +43,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
       maxAge: 25,
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([AppEffects]),
+    EffectsModule.forRoot([]),
     HttpClientInMemoryWebApiModule.forRoot(ProductData),
     HttpClientModule,
     UserModule,

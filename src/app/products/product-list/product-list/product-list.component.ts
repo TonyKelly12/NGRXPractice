@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -23,6 +24,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
+  products$: any;
+  componentActive: boolean;
+  errorMessage$: Observable<string>;
 
 
   constructor(
@@ -34,11 +38,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.store.pipe(select(fromProduct.getCurrentProduct)).subscribe(
       selectedProduct => this.selectedProduct = selectedProduct
     );
+    // Listens for err ors
+    this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
+    // Loads products into the store
+    this.store.dispatch(new productActions.Load());
+    // Listen to the store for changes
+    this.products$ = this.store.pipe(select(fromProduct.getProducts));
 
-    this.productService.getProducts().subscribe(
-      (products: Product[]) => this.products = products,
-      (err: any) => this.errorMessage = err.error
-    );
+    // this.productService.getProducts().subscribe(
+    //   (products: Product[]) => this.products = products,
+    //   (err: any) => this.errorMessage = err.error
+    // );
       /** Code for accessing the store */
       // TODO: Unsubscribe
     this.store.pipe(select(fromProduct.ShowProductCode)).subscribe(
@@ -47,7 +57,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    this.componentActive = false;
   }
 
   checkChanged(value: boolean): void {

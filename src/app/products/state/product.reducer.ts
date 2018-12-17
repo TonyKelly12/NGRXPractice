@@ -1,3 +1,4 @@
+
 import { ProductActions, ProductActionTypes, SetCurrentProduct } from './product.actions';
 import { Product } from './../product';
 import * as fromRoot from '../../state/app.state';
@@ -8,14 +9,16 @@ export interface State extends fromRoot.State {
 }
 export interface ProductState {
   showProductCode: boolean;
-  currentProduct: Product;
+  currentProductID: number | null;
   products: Product[];
+  error: string;
 }
 
 const initialState: ProductState = {
   showProductCode: true,
-  currentProduct: null,
-  products: []
+  currentProductID: null,
+  products: [],
+  error: ''
 };
 
 // Creating selectors
@@ -26,9 +29,27 @@ export const ShowProductCode = createSelector(
   state => state.showProductCode
 );
 
+export const getCurrentProductID = createSelector(
+  getProductFeatureState,
+  state => state.currentProductID
+);
+
 export const getCurrentProduct = createSelector(
   getProductFeatureState,
-  state => state.currentProduct
+  getCurrentProductID,
+  (state, currentProductID) => {
+    if (currentProductID === 0) {
+      return {
+        id: 0,
+        productName: '',
+        productCode: 'New',
+        description: '',
+        starRating: 0
+      };
+    } else {
+      return currentProductID ? state.products.find(p => p.id === currentProductID ) : null;
+    }
+  }
 );
 
 export const getProducts = createSelector(
@@ -36,9 +57,15 @@ export const getProducts = createSelector(
   state => state.products
 );
 
+export const getError = createSelector(
+  getProductFeatureState,
+  state => state.error
+);
+
 // Create a Reducer
 export function ProductReducer(state = initialState, action: ProductActions): ProductState {
   switch (action.type) {
+
     case ProductActionTypes.ToggleProductCode:
       return {
         ...state,
@@ -48,25 +75,35 @@ export function ProductReducer(state = initialState, action: ProductActions): Pr
     case ProductActionTypes.SetCurrentProduct:
       return{
         ...state,
-        currentProduct: {...action.payload}
+        currentProductID: action.payload.id
       };
 
     case ProductActionTypes.ClearCurrentProduct:
     return {
       ...state,
-      currentProduct: null
+      currentProductID: null
     };
+
     case ProductActionTypes.InitializeCurrentProduct:
     return {
       ...state,
-      currentProduct: {
-        id: 0,
-        productName: '',
-        productCode: 'New',
-        description: '',
-        starRating: 0
-      }
+      currentProductID: 0
     };
+
+    case ProductActionTypes.LoadSuccess:
+    return {
+      ...state,
+      products: action.payload,
+      error: ''
+    };
+
+    case ProductActionTypes.LoadFail:
+    return{
+      ...state,
+      products: [],
+      error: action.payload
+    };
+
     default:
       return state;
   }
