@@ -1,3 +1,4 @@
+import { DragulaModule } from 'ng2-dragula';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { NgModule } from '@angular/core';
@@ -10,6 +11,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import {ProductReducer} from './state/product.reducer';
 import { ProductEffects } from './state/product.effects';
+
+// Dragula
+
 const productRoutes: Routes = [
   { path: '', component: ProductShellComponent }
 ];
@@ -19,7 +23,8 @@ const productRoutes: Routes = [
     SharedModule,
     RouterModule.forChild(productRoutes),
     StoreModule.forFeature('products', ProductReducer),
-    EffectsModule.forFeature([ProductEffects])
+    EffectsModule.forFeature([ProductEffects]),
+    DragulaModule
   ],
   declarations: [
     ProductShellComponent,

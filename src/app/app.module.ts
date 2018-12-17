@@ -26,6 +26,9 @@ import { User } from './User/user';
 /* Dev Tools */
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
+// Dragula Module
+import {DragulaModule} from 'ng2-dragula';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +51,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     HttpClientModule,
     UserModule,
     AppRoutingModule,
+    DragulaModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

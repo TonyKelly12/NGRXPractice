@@ -9,6 +9,9 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromProduct from '../../state/index';
 import * as productActions from '../../state/product.actions';
+import { DragulaService } from 'ng2-dragula';
+
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -28,10 +31,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
   componentActive: boolean;
   errorMessage$: Observable<string>;
 
+  // Dragula Options
+  dragulaOptions: any = {
+    removeOnSpill: true
+  };
 
   constructor(
     private store: Store<fromProduct.State>,
-    private productService: ProductService) { }
+    private productService: ProductService,
+    private dragulaService: DragulaService
+    ) { }
 
   ngOnInit(): void {
     // TODO: Unsubscribe
