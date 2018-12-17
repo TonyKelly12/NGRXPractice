@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 
 
 
+
 // Define actions
 export enum ProductActionTypes {
   ToggleProductCode = '[Product] Toggle Product Code',
@@ -23,7 +24,22 @@ export enum ProductActionTypes {
   DeleteProductFail = '[Product] Delete Product Fail'
 }
 
+// Define Dragula actions
+
+export enum ProductDragActionTypes {
+  Drag = '[Dragula] Was lifted from source',
+  DragEnd = '[Dragula] Dragging Events for element ended',
+  Drop = '[Dragula] Element was dropped into Target',
+  Cancel = '[Dragula] Element being dragged canceled',
+  Remove = '[Dragula] Element was removed from DOM',
+  Shadow = '[Dragula] The shadow was moved to container',
+  Over = '[Dragula] Element is over container from origin src',
+  Out = '[Dragula] Element was dragged out of container',
+  Cloned = '[DOM Element was cloned]'
+}
+
 // Action Creators
+// Creators for product list
 export class ToggleProductCode implements Action {
   readonly type = ProductActionTypes.ToggleProductCode;
 
@@ -114,6 +130,54 @@ export class DeleteProductFail implements Action {
   constructor(public payload: string) { }
 }
 
+// Creators for Dragula
+
+export class Drag implements Action {
+  readonly type = ProductDragActionTypes.Drag;
+  constructor(public payload: {}) {
+}
+}
+
+export class DragEnd implements Action {
+  readonly type = ProductDragActionTypes.DragEnd;
+  constructor(public payload: {}) {}
+}
+
+export class Drop implements Action {
+  readonly type = ProductDragActionTypes.Drop;
+  constructor(public payload: {}) {}
+}
+
+export class Cancel implements Action {
+  readonly type = ProductDragActionTypes.Cancel;
+  constructor(public payload: {}) {}
+}
+
+export class Remove implements Action {
+  readonly type = ProductDragActionTypes.Remove;
+  constructor(public payload: {}) {}
+}
+
+export class Shadow implements Action {
+  readonly type = ProductDragActionTypes.Shadow;
+  constructor(public payload: {}) {}
+}
+
+export class Over implements Action {
+  readonly type = ProductDragActionTypes.Over;
+  constructor(public payload: {}) {}
+}
+
+export class Out implements Action {
+  readonly type = ProductDragActionTypes.Out;
+  constructor(public payload: {}) {}
+}
+
+export class Cloned implements Action {
+  readonly type = ProductDragActionTypes.Cloned;
+  constructor(public payload: {}) {}
+}
+
 // Union the valid types
 export type ProductActions = ToggleProductCode
   | SetCurrentProduct
@@ -131,3 +195,14 @@ export type ProductActions = ToggleProductCode
   | DeleteProduct
   | DeleteProductSuccess
   | DeleteProductFail;
+
+  export type ProductDragActions = Drag
+  | DragEnd
+  | Drop
+  | Cancel
+  | Remove
+  | Shadow
+  | Over
+  | Out
+  | Cloned;
+

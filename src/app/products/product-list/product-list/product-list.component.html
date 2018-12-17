@@ -4,9 +4,9 @@
     {{pageTitle}}
   </div>
 <div class="wrapper">
-  <div class="card-body container" *ngIf="products$ | async as products" dragula='"ProductListComponent"' dragulaOptions='"dragulaOptions"'>
-    <div class="list-group">
-      <button class="list-group-item list-group-item-action rounded-0"
+  <div class="card-body " *ngIf="products$ | async as products" >
+    <div class="list-group container" dragula="ProductListComponent" >
+      <button class="list-group-item list-group-item-action rounded-0 "
           *ngFor="let product of products"
           [ngClass]="{'active': product?.id === selectedProduct?.id}"
           (click)="productSelected(product)">{{ product.productName }}

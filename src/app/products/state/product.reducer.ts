@@ -1,5 +1,5 @@
 import { Product } from '../product';
-import { ProductActionTypes, ProductActions } from './product.actions';
+import { ProductActionTypes, ProductActions, ProductDragActionTypes, ProductDragActions } from './product.actions';
 
 // State for this feature (Product)
 export interface ProductState {
@@ -7,16 +7,18 @@ export interface ProductState {
   currentProductId: number | null;
   products: Product[];
   error: string;
+  dragState: {};
 }
 
 const initialState: ProductState = {
   showProductCode: true,
   currentProductId: null,
   products: [],
-  error: ''
+  error: '',
+  dragState: {}
 };
 
-export function ProductReducer(state = initialState, action: ProductActions): ProductState {
+export function ProductReducer(state = initialState, action: ProductActions | ProductDragActions): ProductState {
 
   switch (action.type) {
     case ProductActionTypes.ToggleProductCode:
@@ -101,6 +103,60 @@ export function ProductReducer(state = initialState, action: ProductActions): Pr
       return {
         ...state,
         error: action.payload
+      };
+
+      case ProductDragActionTypes.Drag:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.DragEnd:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.Drop:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.Cancel:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.Remove:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.Shadow:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.Over:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.Out:
+      return {
+        ...state,
+        dragState: action.payload
+      };
+
+      case ProductDragActionTypes.Cloned:
+      return {
+        ...state,
+        dragState: action.payload
       };
 
     default:
