@@ -1,8 +1,9 @@
+import { Product } from './../../product';
 import { Observable, Subscription } from 'rxjs';
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Product } from '../../product';
+
 import { ProductService } from '../../product.service';
 import { Store, select } from '@ngrx/store';
 
@@ -21,14 +22,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   displayCode: boolean;
 
-  products: Product[];
+  products: Product[] = [];
 
   dragProducts = 'ProductListComponent';
   subs = new Subscription();
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
-  products$: any;
+  products$: Observable<Product[]>;
   componentActive: boolean;
   errorMessage$: Observable<string>;
 
@@ -42,6 +43,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private dragulaService: DragulaService
   ) {
+
+    // Listen to the store for changes
+    this.store.pipe(select(fromProduct.getProducts)).subscribe ( prods => {
+      prods.forEach( product => this.products.push(product));
+    });
+
     this.subs.add(
       this.dragulaService
         .drag(this.dragProducts)
@@ -67,12 +74,20 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.store.dispatch(new productActions.DragEnd(payload));
     }));
 
-    this.subs.add(  this.dragulaService.drop('ProductListComponent').subscribe(({name, el, source, sibling}) => {
+    this.subs.add(this.dragulaService.dropModel('ProductListComponent').subscribe(({
+      name, el, target, item, source, sourceModel, targetModel, sibling, sourceIndex, targetIndex}) => {
       const payload = {
         name: name,
         el: el,
         source: source,
-        sibling: sibling
+        sibling: sibling,
+        target: target,
+        item: item,
+        sourceModel: sourceModel,
+        targetModel: targetModel,
+        sourceIndex: sourceIndex,
+        targetIndex: targetIndex
+
       };
       this.store.dispatch(new productActions.Drop(payload));
     }));
@@ -89,12 +104,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
      }));
 
      this.subs.add(
-      this.dragulaService.remove('ProductListComponent').subscribe(({name, el, source, container}) => {
+      this.dragulaService.removeModel('ProductListComponent').subscribe(({name, el, source, container, item, sourceModel, sourceIndex}) => {
        const payload = {
          name: name,
          el: el,
          source: source,
-         container: container
+         container: container,
+         item: item,
+         sourceModel: sourceModel,
+         sourceIndex: sourceIndex
        };
      }));
 
@@ -148,8 +166,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
     // Loads products into the store
     this.store.dispatch(new productActions.Load());
-    // Listen to the store for changes
-    this.products$ = this.store.pipe(select(fromProduct.getProducts));
+
 
     // this.productService.getProducts().subscribe(
     //   (products: Product[]) => this.products = products,
