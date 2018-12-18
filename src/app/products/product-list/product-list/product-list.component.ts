@@ -1,3 +1,4 @@
+import { ProductsModule } from './../../products.module';
 import { Product } from './../../product';
 import { Observable, Subscription } from 'rxjs';
 
@@ -46,7 +47,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     // Listen to the store for changes
     this.store.pipe(select(fromProduct.getProducts)).subscribe ( prods => {
-      prods.forEach( product => this.products.push(product));
+      this.products = [];
+      prods.forEach( product => {
+        this.products.push(product);
+      }   );
     });
 
     this.subs.add(
